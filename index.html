@@ -1,0 +1,619 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Basketball - Todo sobre el deporte</title>
+
+    <link rel="icon" href="favicon.ico">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Berkshire+Swash|Lobster|Oswald|Pacifico|Roboto+Slab" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- ===== CSS PARA SLIDESHOW, GALERÍA, SOBRE NOSOTROS Y MODALES ===== -->
+    <style>
+      /* ============================================ */
+      /* 1. SLIDESHOW: Contenedor compacto, imágenes grandes */
+      /* ============================================ */
+      .slideshow {
+        width: 100% !important;
+        position: relative !important;
+        text-align: center !important;
+        overflow: hidden !important;
+        background-color: #000 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .slide {
+        display: none !important;
+        width: 100% !important;
+        height: 600px !important;
+        position: relative !important;
+        overflow: hidden !important;
+      }
+
+      .slide[style*="block"] {
+        display: block !important;
+      }
+
+      .slide img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+        display: block !important;
+        margin: 0 auto !important;
+      }
+
+      .prev, .next {
+        position: absolute !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        font-size: 30px !important;
+        color: white !important;
+        background-color: rgba(0,0,0,0.6) !important;
+        padding: 10px 15px !important;
+        cursor: pointer !important;
+        z-index: 10 !important;
+        text-decoration: none !important;
+        border-radius: 4px !important;
+        user-select: none !important;
+      }
+      .prev:hover, .next:hover {
+        background-color: rgba(0,0,0,0.9) !important;
+      }
+      .prev { left: 10px !important; }
+      .next { right: 10px !important; }
+
+      .control {
+        text-align: center !important;
+        margin-top: 15px !important;
+        padding: 10px 0 !important;
+        background-color: #000 !important;
+      }
+      .dot {
+        cursor: pointer !important;
+        display: inline-block !important;
+        width: 15px !important;
+        height: 15px !important;
+        margin: 0 5px !important;
+        background-color: #bbb !important;
+        border-radius: 50% !important;
+        transition: background-color 0.3s !important;
+      }
+      .dot.active, .dot:hover {
+        background-color: #fff !important;
+      }
+
+      /* ============================================ */
+      /* 2. GALERÍA DE HABILIDADES: Con efecto HOVER de información */
+      /* ============================================ */
+      .sports {
+        width: fit-content !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        margin: 0 auto 20px auto !important;
+        background-color: #f0f0f0 !important;
+        padding: 10px !important;
+        border-radius: 8px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        position: relative !important;
+        overflow: hidden !important;
+        transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+        cursor: pointer !important;
+      }
+
+      .sports:hover {
+        transform: translateY(-5px) !important;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3) !important;
+      }
+
+      .sports img {
+        width: auto !important;
+        height: auto !important;
+        max-width: 100% !important;
+        max-height: 250px !important;
+        object-fit: contain !important;
+        display: block !important;
+        margin-bottom: 10px !important;
+        transition: transform 0.3s ease !important;
+      }
+      
+      .sports:hover img {
+        transform: scale(1.05) !important;
+      }
+
+      .sports h1 {
+        font-size: 1.2rem !important;
+        margin: 0 !important;
+        position: relative !important;
+        z-index: 1 !important;
+      }
+
+      .sports-info {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background-color: rgba(0, 0, 0, 0.85) !important;
+        color: #ffffff !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        padding: 15px !important;
+        font-size: 0.95rem !important;
+        line-height: 1.4 !important;
+        opacity: 0 !important;
+        transition: opacity 0.3s ease !important;
+        box-sizing: border-box !important;
+        z-index: 2 !important;
+        border-radius: 8px !important;
+      }
+
+      .sports:hover .sports-info {
+        opacity: 1 !important;
+      }
+
+      /* ============================================ */
+      /* 3. SOBRE NOSOTROS: Imágenes circulares e INTERACTIVAS */
+      /* ============================================ */
+      .about img {
+        width: auto !important;
+        max-width: 250px !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1 !important;
+        object-fit: cover !important;
+        background-color: #f0f0f0 !important;
+        border-radius: 50% !important;
+        padding: 5px !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        margin: 0 auto 15px auto !important;
+      }
+
+      .legend-img {
+        cursor: pointer !important;
+        transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+        border: 3px solid transparent !important;
+      }
+      .legend-img:hover {
+        transform: scale(1.08) !important;
+        box-shadow: 0 10px 25px rgba(255, 165, 0, 0.6) !important;
+        border-color: #ff8c00 !important;
+      }
+
+      .about h2 {
+        margin-top: 10px !important;
+        font-size: 1.5rem !important;
+      }
+
+      .modal-achievements {
+        text-align: left !important;
+        padding-left: 20px !important;
+      }
+      .modal-achievements li {
+        margin-bottom: 8px !important;
+        font-size: 1rem !important;
+      }
+
+      /* ============================================ */
+      /* 4. CONTACTO: Ventanitas oscuras, texto espaciado y círculos blancos */
+      /* ============================================ */
+      .contact .item {
+        background-color: #212529 !important; /* Fondo oscuro elegante */
+        border-radius: 15px !important;
+        padding: 40px 30px !important; /* MÁS ESPACIO INTERNO para que no se pegue a los bordes */
+        box-shadow: 0 8px 25px rgba(0,0,0,0.5) !important;
+        height: 100% !important;
+        color: #ffffff !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important; /* Centra todo verticalmente */
+        align-items: center !important; /* Centra todo horizontalmente */
+      }
+
+      .contact .item h1 {
+        color: #ff8c00 !important; /* Naranja basketball para que resalte */
+        font-size: 1.8rem !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1.5px !important;
+        margin-bottom: 25px !important; /* SEPARACIÓN CLARA entre el título y el texto */
+      }
+
+      .contact .item p {
+        font-size: 1.1rem !important;
+        line-height: 1.8 !important; /* INTERLINEADO AMPLIO: esto evita que se vea "todo pegado" */
+        color: #e0e0e0 !important; /* Blanco suave, más cómodo para la vista */
+        text-align: center !important;
+        margin: 0 !important;
+      }
+
+      .social-icon {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 60px !important;
+        height: 60px !important;
+        border-radius: 50% !important; /* Círculo perfecto */
+        background-color: #ffffff !important; /* Círculo blanco de fondo */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important;
+        transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+        text-decoration: none !important;
+        margin: 8px 0 !important;
+      }
+
+      .social-icon:hover {
+        transform: translateY(-5px) scale(1.1) !important;
+        box-shadow: 0 8px 20px rgba(255, 140, 0, 0.4) !important; /* Brillo naranja al pasar el mouse */
+      }
+
+      /* Colores de marca dentro del círculo blanco */
+      .social-icon.fa-facebook { color: #3b5998 !important; }
+      .social-icon.fa-instagram { color: #e1306c !important; }
+      .social-icon.fa-tiktok { color: #000000 !important; } /* Se ve perfecto sobre el círculo blanco */
+      .social-icon.fa-whatsapp { color: #25D366 !important; }
+    </style>
+  </head>
+  <body>
+    <div class="header py-2">
+      <span class="logo">El Mundo del Basket</span>
+      <ul>
+        <li><a class="menuitem active" href="#home">Inicio</a></li>
+        <li><a class="menuitem" href="#more">Más información</a></li>
+        <li><a class="menuitem" href="#about">Grandes Leyendas</a></li>
+        <li><a class="menuitem" href="#contact">Acerca de</a></li>
+      </ul>
+    </div>
+
+    <div id="home">
+      <div class="slideshow">
+        <div class="slide" style="display: block;">
+          <img src="images/imagen 1.jpg" alt="Imagen 1">
+          <a class="prev" onclick="slide(-1)">&#10094;</a>
+          <a class="next" onclick="slide(1)">&#10095;</a>
+        </div>
+        <div class="slide">
+          <img src="images/imagen 2.jpg" alt="Imagen 2">
+          <a class="prev" onclick="slide(-1)">&#10094;</a>
+          <a class="next" onclick="slide(1)">&#10095;</a>
+        </div>
+        <div class="slide">
+          <img src="images/imagen 3.jpg" alt="Imagen 3">
+          <a class="prev" onclick="slide(-1)">&#10094;</a>
+          <a class="next" onclick="slide(1)">&#10095;</a>
+        </div>
+        <div class="slide">
+          <img src="images/imagen 4.jpg" alt="Imagen 4">
+          <a class="prev" onclick="slide(-1)">&#10094;</a>
+          <a class="next" onclick="slide(1)">&#10095;</a>
+        </div>
+  
+        <div class="control">
+          <span class="dot active" onclick="control(1)"></span>
+          <span class="dot" onclick="control(2)"></span>
+          <span class="dot" onclick="control(3)"></span>
+          <span class="dot" onclick="control(4)"></span>
+        </div>
+      </div>
+  
+      <div class="container">
+        <div class="row justify-content-center">
+          <!-- 1. Tiro Libre -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/tiro libre.jpg" alt="Tiro Libre" />
+            <h1>Tiro Libre</h1>
+            <div class="sports-info">Lanzamiento sin oposición desde la línea de tiros libres. Vale 1 punto.</div>
+          </div>
+          
+          <!-- 2. Dribling -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/dribling.jpg" alt="Dribbling" />
+            <h1>Dribling</h1>
+            <div class="sports-info">Acción de botar el balón contra el suelo con una mano mientras el jugador se desplaza.</div>
+          </div>
+          
+          <!-- 3. Pase -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/pase.jpg" alt="Pase" />
+            <h1>Pase</h1>
+            <div class="sports-info">Movimiento del balón de un jugador a otro del mismo equipo para avanzar o buscar tiro.</div>
+          </div>
+          
+          <!-- 4. Rebote -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/rebote.jpg" alt="Rebote" />
+            <h1>Rebote</h1>
+            <div class="sports-info">Recuperación del balón después de un tiro fallado, ya sea en ataque o defensa.</div>
+          </div>
+          
+          <!-- 5. Tiro de 3 -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/tiro de 3.jpg" alt="Tiro de 3" />
+            <h1>Tiro de 3</h1>
+            <div class="sports-info">Lanzamiento a canasta realizado desde detrás de la línea de tres puntos. Vale 3 puntos.</div>
+          </div>
+          
+          <!-- 6. Mate (Dunk) -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/mate.jpg" alt="Mate" />
+            <h1>Mate (Dunk)</h1>
+            <div class="sports-info">Introducción del balón en la canasta de arriba hacia abajo con una o dos manos.</div>
+          </div>
+          
+          <!-- 7. Bloqueo -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/bloqueo.jpg" alt="Bloqueo" />
+            <h1>Bloqueo</h1>
+            <div class="sports-info">Acción defensiva legal para interceptar o desviar un tiro o pase del oponente.</div>
+          </div>
+          
+          <!-- 8. Defensa -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/defensa.jpg" alt="Defensa" />
+            <h1>Defensa</h1>
+            <div class="sports-info">Conjunto de técnicas y tácticas para evitar que el equipo contrario anote puntos.</div>
+          </div>
+          
+          <!-- 9. Bandeja -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/bandeja.jpg" alt="Bandeja" />
+            <h1>Bandeja</h1>
+            <div class="sports-info">Tiro en movimiento cerca del aro, generalmente utilizando el tablero como apoyo.</div>
+          </div>
+          
+          <!-- 10. Gancho -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/gancho.jpg" alt="Gancho" />
+            <h1>Gancho</h1>
+            <div class="sports-info">Tiro realizado con una sola mano, con el brazo extendido en forma de arco, difícil de bloquear.</div>
+          </div>
+          
+          <!-- 11. Robo de Balón -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/robo de balon.jpg" alt="Robo de Balón" />
+            <h1>Robo de Balón</h1>
+            <div class="sports-info">Recuperación legal del balón en posesión del equipo contrario sin cometer falta.</div>
+          </div>
+          
+          <!-- 12. Tiro en Bandeja -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/tiro en bandeja.jpg" alt="Tiro en Bandeja" />
+            <h1>Tiro en Bandeja</h1>
+            <div class="sports-info">Lanzamiento en carrera, soltando el balón cerca del aro con suavidad y precisión.</div>
+          </div>
+          
+          <!-- 13. Posiciones -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/posiciones.jpg" alt="Posiciones" />
+            <h1>Posiciones</h1>
+            <div class="sports-info">Los 5 roles en la cancha: Base (1), Escolta (2), Alero (3), Ala-pívot (4) y Pívot (5).</div>
+          </div>
+          
+          <!-- 14. Árbitros -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/arbitro.jpg" alt="Árbitros" />
+            <h1>Árbitros</h1>
+            <div class="sports-info">Oficiales encargados de hacer cumplir las reglas, cobrar faltas y dirigir el encuentro.</div>
+          </div>
+          
+          <!-- 15. La Cancha -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/cancha.jpg" alt="La Cancha" />
+            <h1>La Cancha</h1>
+            <div class="sports-info">Superficie rectangular de juego. En FIBA mide 28 metros de largo por 15 de ancho.</div>
+          </div>
+          
+          <!-- 16. El Balón -->
+          <div class="col-sm-6 col-md-4 col-lg-3 sports">
+            <img src="images/balon.jpg" alt="El Balón" />
+            <h1>El Balón</h1>
+            <div class="sports-info">Esfera de cuero o material sintético. Tamaño 7 (hombres) o 6 (mujeres) con peso reglamentario.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="more" id="more" style="text-align: center; padding: 40px 0;">
+      <p class="title">TODO SOBRE EL BASKETBALL AQUÍ.... </p>
+      <a class="btn btn-primary" target="_blank" href="https://about.fiba.basketball/es/our-sport/basketball">
+        Historia del Basketball
+      </a>
+    </div>
+
+    <div class="about" id="about">
+      <h1 class="my-5 text-center">Leyendas</h1>
+      <div class="container">
+        <div class="row justify-content-center">
+          
+          <div class="col-md-4 text-center">
+            <img src="images/michael jordan.jpg" alt="Michael Jordan" class="legend-img" data-toggle="modal" data-target="#modalJordan" />
+            <h2>Michael Jordan</h2>
+            <p><strong>Leyenda del Básquetbol - Chicago Bulls</strong></p>
+            <small class="text-muted" style="font-size: 0.85rem;">(Toca la imagen para ver sus logros)</small>
+          </div>
+
+          <div class="col-md-4 text-center">
+            <img src="images/lebron.jpg" alt="LeBron James" class="legend-img" data-toggle="modal" data-target="#modalLeBron" />
+            <h2>LeBron James</h2>
+            <p><strong>Máximo Anotador Histórico NBA</strong></p>
+            <small class="text-muted" style="font-size: 0.85rem;">(Toca la imagen para ver sus logros)</small>
+          </div>
+
+          <div class="col-md-4 text-center">
+            <img src="images/kobee.jpg" alt="Kobe Bryant" class="legend-img" data-toggle="modal" data-target="#modalKobe" />
+            <h2>Kobe Bryant</h2>
+            <p><strong>Black Mamba - Los Angeles Lakers</strong></p>
+            <small class="text-muted" style="font-size: 0.85rem;">(Toca la imagen para ver sus logros)</small>
+          </div>
+
+        </div>
+
+        <p class="my-5 text-center">
+          <b>¿QUIÉNES SOMOS?</b><br/>
+          <b>EL EQUIPO APASIONADO POR EL BASKETBALL</b><br/><br/>
+        
+          El basketball es un deporte de equipo en el que dos conjuntos de cinco jugadores cada uno intentan anotar puntos<br />
+          introduciendo un balón en un aro colocado a 3.05 metros del suelo del que cuelga una red.<br/>
+          Se juega en cuatro cuartos de 10 o 12 minutos cada uno, dependiendo de la liga. Fue inventado en 1891 por James Naismith<br />
+          en Springfield, Massachusetts. Es uno de los deportes más populares del mundo y se practica tanto en interiores como en exteriores.
+        </p>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SECCIÓN ACERCA DE / CONTACTO (MEJORADA) -->
+    <!-- ========================================== -->
+    <div class="contact" id="contact">
+      <h1 class="my-5 text-center">Acerca de</h1>
+      <div class="container">
+        <div class="row justify-content-md-center">
+          
+          <!-- TARJETA NUESTRO SERVICIO -->
+          <div class="col col-md-4 text-center mb-4">
+            <div class="item">
+              <h1>NUESTRO SERVICIO</h1>
+              <p>
+                Ofrecemos información completa sobre basketball: reglas, técnicas, historia, 
+                jugadores legendarios, posiciones en la cancha y todo lo que necesitas para 
+                practicar y entender este apasionante deporte, ya seas principiante o experto.
+              </p>
+            </div>
+          </div>
+          
+          <div class="col-md-auto"></div>
+          
+          <!-- TARJETA SÍGUENOS -->
+          <div class="col col-md-4 text-center mb-4">
+            <div class="item">
+              <h1>SÍGUENOS</h1>
+              <div class="mt-3 d-flex flex-column align-items-center">
+                
+                <a href="https://www.facebook.com/share/1MWDctUb3V/" target="_blank" class="fab fa-facebook social-icon" aria-label="Facebook"></a>
+                <a href="https://instagram.com/vale.__.contreras?xtok=MWN1ajAwMzIzdWozcg%3D%3D" target="_blank" class="fab fa-instagram social-icon" aria-label="Instagram"></a>
+                <a href="https://www.tiktok.com/@valeriacontreras176?_r=1&_t=ZS-9AWpsaKikf1" target="_blank" class="fab fa-tiktok social-icon" aria-label="TikTok"></a>
+                
+                <!-- WHATSAPP: Enlace universal que abre la APP nativa en celulares automáticamente -->
+                <a href="https://api.whatsapp.com/send?phone=89821477" target="_blank" class="fab fa-whatsapp social-icon" aria-label="WhatsApp"></a>
+                
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <section class="banner text-center py-4" style="background-color: #333; color: white;">
+      <i class="fab fa-spotify" aria-hidden="true" style="font-size: 40px;"></i>
+      <h1 class="mt-3">Creadora Helen valeria Contreras Gracia</h1>
+      <p>&copy; 12-1 INF</p>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- MODALES DE LEYENDAS (Ventanas emergentes) -->
+    <!-- ========================================== -->
+
+    <!-- Modal Michael Jordan -->
+    <div class="modal fade" id="modalJordan" tabindex="-1" role="dialog" aria-labelledby="modalJordanLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="modalJordanLabel">🐐 Michael Jordan - Leyenda de los Bulls</h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <ul class="modal-achievements">
+              <li>🏆 <strong>6 veces campeón de la NBA</strong> (1991-1993, 1996-1998) con Chicago Bulls.</li>
+              <li>🥇 <strong>5 veces MVP</strong> de la temporada regular.</li>
+              <li>🏅 <strong>6 veces MVP de las Finales</strong> (récord compartido).</li>
+              <li>🔥 <strong>10 veces máximo anotador</strong> de la NBA.</li>
+              <li>⭐ <strong>14 veces All-Star</strong>.</li>
+              <li>📊 Promedio de <strong>30.1 puntos por partido</strong> (el más alto en la historia de la NBA).</li>
+              <li>🌍 <strong>2 medallas de oro olímpicas</strong> (1984, 1992 "Dream Team").</li>
+              <li>💯 Total: <strong>32,292 puntos</strong> en su carrera.</li>
+              <li>👑 Considerado por muchos como <strong>el mejor jugador de todos los tiempos (GOAT)</strong>.</li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal LeBron James -->
+    <div class="modal fade" id="modalLeBron" tabindex="-1" role="dialog" aria-labelledby="modalLeBronLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="modalLeBronLabel">👑 LeBron James - El Rey</h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <ul class="modal-achievements">
+              <li>🏆 <strong>4 veces campeón de la NBA</strong> (con 3 equipos diferentes: Heat, Cavaliers, Lakers).</li>
+              <li>🥇 <strong>4 veces MVP</strong> de la temporada regular.</li>
+              <li>🏅 <strong>4 veces MVP de las Finales</strong>.</li>
+              <li>⭐ <strong>20 veces All-Star</strong> (récord histórico absoluto).</li>
+              <li>🔥 <strong>Máximo anotador histórico</strong> de la NBA (superó a Kareem Abdul-Jabbar).</li>
+              <li>📊 <strong>21 selecciones All-NBA</strong> (récord histórico).</li>
+              <li>🌍 <strong>3 medallas de oro olímpicas</strong> con Team USA.</li>
+              <li>👑 Cuarto en asistencias históricas y sexto en robos de balón.</li>
+              <li>⏳ Sigue activo y rompiendo récords en la actualidad.</li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Kobe Bryant -->
+    <div class="modal fade" id="modalKobe" tabindex="-1" role="dialog" aria-labelledby="modalKobeLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-dark text-white">
+            <h5 class="modal-title" id="modalKobeLabel">🐍 Kobe Bryant - Black Mamba</h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <ul class="modal-achievements">
+              <li>🏆 <strong>5 veces campeón de la NBA</strong> (2000-2002, 2009-2010) con Los Angeles Lakers.</li>
+              <li>🏅 <strong>2 veces MVP de las Finales</strong> (2009, 2010).</li>
+              <li>🥇 <strong>MVP de la temporada 2008</strong>.</li>
+              <li>⭐ <strong>18 veces All-Star</strong>.</li>
+              <li>🔥 <strong>81 puntos en un solo juego</strong> (segunda mejor marca histórica, solo detrás de Wilt Chamberlain).</li>
+              <li>💯 Máximo anotador en la historia de la franquicia de Los Angeles Lakers.</li>
+              <li>🌍 <strong>2 medallas de oro olímpicas</strong> (2008, 2012).</li>
+              <li>🐍 Conocido como <strong>"Black Mamba"</strong> por su mentalidad competitiva inquebrantable ("Mamba Mentality").</li>
+              <li>🏛️ Inducido al Salón de la Fama del Basketball (Naismith Memorial).</li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+  </body>
+</html>
